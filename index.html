@@ -18,10 +18,6 @@
     --text: #0f172a;
     --text-muted: #475569;
     --border: #dbe2ec;
-    --work: #1d4ed8;
-    --work-bg: #dbeafe;
-    --private: #b45309;
-    --private-bg: #fef3c7;
     --radius: 12px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -312,17 +308,6 @@
     font-size: 12px;
     color: var(--text-muted);
   }
-  .badge {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    border-radius: 999px;
-    padding: 3px 12px;
-    white-space: nowrap;
-  }
-  .badge.work { background: var(--work-bg); color: var(--work); }
-  .badge.private { background: var(--private-bg); color: var(--private); }
-
   .statement-foot {
     display: flex;
     justify-content: space-between;
@@ -458,7 +443,6 @@
           <tr>
             <th>利用日</th>
             <th>ご利用先</th>
-            <th>カテゴリ</th>
             <th class="amount">ご利用金額</th>
           </tr>
         </thead>
@@ -482,28 +466,28 @@
 <script>
   const TRANSACTIONS = {
     "2026-05": [
-      { date: "2026/05/02", merchant: "スターバックス 丸の内店", note: "打ち合わせ", category: "仕事", amount: 1280 },
-      { date: "2026/05/07", merchant: "JR東海 エクスプレス予約", note: "新幹線（東京–大阪）", category: "仕事", amount: 27560 },
-      { date: "2026/05/08", merchant: "アスクル", note: "オフィス用品", category: "仕事", amount: 4860 },
-      { date: "2026/05/10", merchant: "イトーヨーカドー", note: "食料品", category: "プライベート", amount: 6432 },
-      { date: "2026/05/12", merchant: "AMAZON WEB SERVICES", note: "クラウド利用料", category: "仕事", amount: 3217 },
-      { date: "2026/05/14", merchant: "ドトールコーヒー", note: "", category: "プライベート", amount: 590 },
-      { date: "2026/05/17", merchant: "Amazon.co.jp", note: "技術書", category: "仕事", amount: 3520 },
-      { date: "2026/05/20", merchant: "日本交通", note: "タクシー", category: "仕事", amount: 2890 },
-      { date: "2026/05/24", merchant: "マツモトキヨシ", note: "日用品", category: "プライベート", amount: 2138 },
-      { date: "2026/05/28", merchant: "焼肉トラジ 銀座店", note: "会食", category: "仕事", amount: 18700 },
+      { date: "2026/05/02", merchant: "スターバックス 丸の内店", note: "打ち合わせ", amount: 1280 },
+      { date: "2026/05/07", merchant: "JR東海 エクスプレス予約", note: "新幹線（東京–大阪）", amount: 27560 },
+      { date: "2026/05/08", merchant: "アスクル", note: "オフィス用品", amount: 4860 },
+      { date: "2026/05/10", merchant: "イトーヨーカドー", note: "食料品", amount: 6432 },
+      { date: "2026/05/12", merchant: "AMAZON WEB SERVICES", note: "クラウド利用料", amount: 3217 },
+      { date: "2026/05/14", merchant: "ドトールコーヒー", note: "", amount: 590 },
+      { date: "2026/05/17", merchant: "Amazon.co.jp", note: "技術書", amount: 3520 },
+      { date: "2026/05/20", merchant: "日本交通", note: "タクシー", amount: 2890 },
+      { date: "2026/05/24", merchant: "マツモトキヨシ", note: "日用品", amount: 2138 },
+      { date: "2026/05/28", merchant: "焼肉トラジ 銀座店", note: "会食", amount: 18700 },
     ],
     "2026-06": [
-      { date: "2026/06/01", merchant: "Netflix.com", note: "サブスクリプション", category: "プライベート", amount: 1590 },
-      { date: "2026/06/02", merchant: "ZOOM.US", note: "サブスクリプション", category: "仕事", amount: 2125 },
-      { date: "2026/06/03", merchant: "セブン-イレブン", note: "", category: "プライベート", amount: 864 },
-      { date: "2026/06/05", merchant: "BIZcomfort", note: "コワーキングスペース", category: "仕事", amount: 8800 },
-      { date: "2026/06/06", merchant: "ユニクロ オンラインストア", note: "", category: "プライベート", amount: 7990 },
-      { date: "2026/06/07", merchant: "くら寿司", note: "", category: "プライベート", amount: 3240 },
-      { date: "2026/06/08", merchant: "AMAZON WEB SERVICES", note: "クラウド利用料", category: "仕事", amount: 3452 },
-      { date: "2026/06/09", merchant: "タリーズコーヒー", note: "打ち合わせ", category: "仕事", amount: 1140 },
-      { date: "2026/06/10", merchant: "ヤマト運輸", note: "宅急便（資料発送）", category: "仕事", amount: 1460 },
-      { date: "2026/06/10", merchant: "ライフ", note: "食料品", category: "プライベート", amount: 4317 },
+      { date: "2026/06/01", merchant: "Netflix.com", note: "サブスクリプション", amount: 1590 },
+      { date: "2026/06/02", merchant: "ZOOM.US", note: "サブスクリプション", amount: 2125 },
+      { date: "2026/06/03", merchant: "セブン-イレブン", note: "", amount: 864 },
+      { date: "2026/06/05", merchant: "BIZcomfort", note: "コワーキングスペース", amount: 8800 },
+      { date: "2026/06/06", merchant: "ユニクロ オンラインストア", note: "", amount: 7990 },
+      { date: "2026/06/07", merchant: "くら寿司", note: "", amount: 3240 },
+      { date: "2026/06/08", merchant: "AMAZON WEB SERVICES", note: "クラウド利用料", amount: 3452 },
+      { date: "2026/06/09", merchant: "タリーズコーヒー", note: "打ち合わせ", amount: 1140 },
+      { date: "2026/06/10", merchant: "ヤマト運輸", note: "宅急便（資料発送）", amount: 1460 },
+      { date: "2026/06/10", merchant: "ライフ", note: "食料品", amount: 4317 },
     ],
   };
 
@@ -523,14 +507,12 @@
 
     for (const tx of rows) {
       const tr = document.createElement("tr");
-      const badgeClass = tx.category === "仕事" ? "work" : "private";
       tr.innerHTML = `
         <td class="date">${tx.date}</td>
         <td>
           <span class="merchant-name">${tx.merchant}</span>
           ${tx.note ? `<span class="merchant-note">${tx.note}</span>` : ""}
         </td>
-        <td><span class="badge ${badgeClass}">${tx.category}</span></td>
         <td class="amount">${yen(tx.amount)}</td>
       `;
       tbody.appendChild(tr);
@@ -558,10 +540,10 @@
       const s = String(v);
       return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
     };
-    const lines = [["利用日", "利用店名", "カテゴリ", "利用金額（円）"].join(",")];
+    const lines = [["利用日", "利用店名", "利用金額（円）"].join(",")];
     for (const tx of rows) {
       const merchant = tx.note ? `${tx.merchant}（${tx.note}）` : tx.merchant;
-      lines.push([tx.date, csvField(merchant), tx.category, tx.amount].join(","));
+      lines.push([tx.date, csvField(merchant), tx.amount].join(","));
     }
     // BOM 付き UTF-8（Excel での文字化け防止）
     const blob = new Blob(["\uFEFF" + lines.join("\r\n") + "\r\n"], { type: "text/csv;charset=utf-8" });
