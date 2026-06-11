@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLAUDE CARD 会員ページ｜ご利用明細</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2a52;
+    --navy-light: #1d4380;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --bg: #f1f4f9;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #dbe2ec;
+    --work: #1d4ed8;
+    --work-bg: #dbeafe;
+    --private: #b45309;
+    --private-bg: #fef3c7;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'IBM Plex Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ===== Header ===== */
+  .site-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 0 24px;
+  }
+  .site-header .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+  }
+  .brand svg { flex-shrink: 0; }
+  .header-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+  }
+  .header-user .login-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 12.5px;
+  }
+  .header-user .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #4ade80;
+  }
+
+  /* ===== Layout ===== */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+  .page-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .page-sub {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+    align-items: stretch;
+  }
+
+  /* ===== Card visual ===== */
+  .credit-card {
+    background: linear-gradient(135deg, #16335f 0%, #1d4380 45%, #3b63a8 100%);
+    border-radius: 16px;
+    color: #fff;
+    padding: 24px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 12px 28px rgba(15, 42, 82, 0.28);
+    position: relative;
+    overflow: hidden;
+  }
+  .credit-card::after {
+    content: "";
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+  }
+  .credit-card .cc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .credit-card .cc-brand {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+  .credit-card .cc-tier {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    opacity: 0.85;
+  }
+  .cc-chip {
+    width: 42px; height: 30px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #e8c873, #c9a44a);
+    margin: 14px 0 10px;
+  }
+  .cc-number {
+    font-size: 19px;
+    letter-spacing: 0.16em;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .cc-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 12.5px;
+    margin-top: 14px;
+  }
+  .cc-bottom .label {
+    font-size: 10px;
+    opacity: 0.7;
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== Summary cards ===== */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+  .summary-card .label {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-card .label svg { color: var(--accent); }
+  .summary-card .value {
+    font-size: 26px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .summary-card .value small {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-left: 2px;
+  }
+
+  /* ===== Statement section ===== */
+  .statement {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .statement-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .statement-head h2 {
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .month-tabs {
+    display: inline-flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px;
+  }
+  .month-tabs button {
+    appearance: none;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 9px 20px;
+    min-height: 44px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 200ms, color 200ms;
+  }
+  .month-tabs button:hover { color: var(--text); }
+  .month-tabs button.active {
+    background: var(--navy);
+    color: #fff;
+  }
+  .month-tabs button:focus-visible,
+  .btn-csv:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .btn-csv {
+    appearance: none;
+    border: none;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0 20px;
+    min-height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 200ms;
+  }
+  .btn-csv:hover { background: var(--accent-hover); }
+
+  /* ===== Table ===== */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+  }
+  thead th {
+    text-align: left;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: #f8fafc;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14.5px;
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background-color 150ms; }
+  tbody tr:hover { background: #f8fafc; }
+  td.amount, th.amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  td.date { white-space: nowrap; color: var(--text-muted); }
+  .merchant-name { font-weight: 500; }
+  .merchant-note {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 3px 12px;
+    white-space: nowrap;
+  }
+  .badge.work { background: var(--work-bg); color: var(--work); }
+  .badge.private { background: var(--private-bg); color: var(--private); }
+
+  .statement-foot {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 24px;
+    background: #f8fafc;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .statement-foot .total {
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .demo-note {
+    margin-top: 24px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .site-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    font-size: 12.5px;
+    padding: 20px 24px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  @media (max-width: 880px) {
+    .top-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .credit-card { max-width: 380px; }
+    .statement-head { flex-direction: column; align-items: stretch; }
+    .month-tabs { justify-content: center; }
+    .month-tabs button { flex: 1; }
+    .btn-csv { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+        <rect x="2" y="8.5" width="20" height="3" fill="currentColor"/>
+      </svg>
+      CLAUDE CARD
+    </div>
+    <div class="header-user">
+      <span class="login-badge"><span class="dot" aria-hidden="true"></span>ログイン中</span>
+      <span>デモ 太郎 様</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <h1 class="page-title">ご利用明細照会</h1>
+  <p class="page-sub">カードのご利用状況をご確認いただけます。明細は CSV 形式でダウンロードできます。</p>
+
+  <div class="top-grid">
+    <div class="credit-card" aria-label="カード情報">
+      <div class="cc-top">
+        <span class="cc-brand">CLAUDE CARD</span>
+        <span class="cc-tier">PLATINUM</span>
+      </div>
+      <div>
+        <div class="cc-chip" aria-hidden="true"></div>
+        <div class="cc-number">**** **** **** 4242</div>
+      </div>
+      <div class="cc-bottom">
+        <div>
+          <div class="label">CARD HOLDER</div>
+          <div>DEMO TARO</div>
+        </div>
+        <div>
+          <div class="label">VALID THRU</div>
+          <div>08/28</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <span class="label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M7 8h7a3 3 0 010 6H8a3 3 0 000 6h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          ご利用合計（<span id="sum-month-label">今月</span>）
+        </span>
+        <span class="value" id="sum-amount">¥0</span>
+      </div>
+      <div class="summary-card">
+        <span class="label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          ご利用件数
+        </span>
+        <span class="value" id="sum-count">0<small>件</small></span>
+      </div>
+      <div class="summary-card">
+        <span class="label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          お支払日
+        </span>
+        <span class="value" id="sum-payday">－</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="statement">
+    <div class="statement-head">
+      <h2>ご利用明細</h2>
+      <div class="month-tabs" role="tablist" aria-label="対象月の選択">
+        <button type="button" id="tab-2026-05" role="tab" aria-selected="false">2026年5月分（先月）</button>
+        <button type="button" id="tab-2026-06" role="tab" aria-selected="true" class="active">2026年6月分（今月）</button>
+      </div>
+      <button type="button" class="btn-csv" id="btn-csv">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        CSVダウンロード
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>利用日</th>
+            <th>ご利用先</th>
+            <th>カテゴリ</th>
+            <th class="amount">ご利用金額</th>
+          </tr>
+        </thead>
+        <tbody id="tx-body"></tbody>
+      </table>
+    </div>
+
+    <div class="statement-foot">
+      <span id="foot-count"></span>
+      <span class="total" id="foot-total"></span>
+    </div>
+  </section>
+
+  <p class="demo-note">※ 本サイトはハンズオン用のデモです。表示されている会員情報・取引データはすべて架空のものです。</p>
+</main>
+
+<footer class="site-footer">
+  CLAUDE CARD（デモ）— Claude Code Club ハンズオン教材
+</footer>
+
+<script>
+  const TRANSACTIONS = {
+    "2026-05": [
+      { date: "2026/05/02", merchant: "スターバックス 丸の内店", note: "打ち合わせ", category: "仕事", amount: 1280 },
+      { date: "2026/05/07", merchant: "JR東海 エクスプレス予約", note: "新幹線（東京–大阪）", category: "仕事", amount: 27560 },
+      { date: "2026/05/08", merchant: "アスクル", note: "オフィス用品", category: "仕事", amount: 4860 },
+      { date: "2026/05/10", merchant: "イトーヨーカドー", note: "食料品", category: "プライベート", amount: 6432 },
+      { date: "2026/05/12", merchant: "AMAZON WEB SERVICES", note: "クラウド利用料", category: "仕事", amount: 3217 },
+      { date: "2026/05/14", merchant: "ドトールコーヒー", note: "", category: "プライベート", amount: 590 },
+      { date: "2026/05/17", merchant: "Amazon.co.jp", note: "技術書", category: "仕事", amount: 3520 },
+      { date: "2026/05/20", merchant: "日本交通", note: "タクシー", category: "仕事", amount: 2890 },
+      { date: "2026/05/24", merchant: "マツモトキヨシ", note: "日用品", category: "プライベート", amount: 2138 },
+      { date: "2026/05/28", merchant: "焼肉トラジ 銀座店", note: "会食", category: "仕事", amount: 18700 },
+    ],
+    "2026-06": [
+      { date: "2026/06/01", merchant: "Netflix.com", note: "サブスクリプション", category: "プライベート", amount: 1590 },
+      { date: "2026/06/02", merchant: "ZOOM.US", note: "サブスクリプション", category: "仕事", amount: 2125 },
+      { date: "2026/06/03", merchant: "セブン-イレブン", note: "", category: "プライベート", amount: 864 },
+      { date: "2026/06/05", merchant: "BIZcomfort", note: "コワーキングスペース", category: "仕事", amount: 8800 },
+      { date: "2026/06/06", merchant: "ユニクロ オンラインストア", note: "", category: "プライベート", amount: 7990 },
+      { date: "2026/06/07", merchant: "くら寿司", note: "", category: "プライベート", amount: 3240 },
+      { date: "2026/06/08", merchant: "AMAZON WEB SERVICES", note: "クラウド利用料", category: "仕事", amount: 3452 },
+      { date: "2026/06/09", merchant: "タリーズコーヒー", note: "打ち合わせ", category: "仕事", amount: 1140 },
+      { date: "2026/06/10", merchant: "ヤマト運輸", note: "宅急便（資料発送）", category: "仕事", amount: 1460 },
+      { date: "2026/06/10", merchant: "ライフ", note: "食料品", category: "プライベート", amount: 4317 },
+    ],
+  };
+
+  const MONTH_META = {
+    "2026-05": { label: "2026年5月分", short: "先月", payday: "5月27日" },
+    "2026-06": { label: "2026年6月分", short: "今月", payday: "6月29日" },
+  };
+
+  let currentMonth = "2026-06";
+  const yen = (n) => "¥" + n.toLocaleString("ja-JP");
+
+  function render() {
+    const rows = TRANSACTIONS[currentMonth];
+    const meta = MONTH_META[currentMonth];
+    const tbody = document.getElementById("tx-body");
+    tbody.innerHTML = "";
+
+    for (const tx of rows) {
+      const tr = document.createElement("tr");
+      const badgeClass = tx.category === "仕事" ? "work" : "private";
+      tr.innerHTML = `
+        <td class="date">${tx.date}</td>
+        <td>
+          <span class="merchant-name">${tx.merchant}</span>
+          ${tx.note ? `<span class="merchant-note">${tx.note}</span>` : ""}
+        </td>
+        <td><span class="badge ${badgeClass}">${tx.category}</span></td>
+        <td class="amount">${yen(tx.amount)}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    const total = rows.reduce((s, tx) => s + tx.amount, 0);
+    document.getElementById("sum-month-label").textContent = meta.short;
+    document.getElementById("sum-amount").textContent = yen(total);
+    document.getElementById("sum-count").innerHTML = `${rows.length}<small>件</small>`;
+    document.getElementById("sum-payday").textContent = meta.payday;
+    document.getElementById("foot-count").textContent = `${meta.label}：全 ${rows.length} 件`;
+    document.getElementById("foot-total").textContent = `合計 ${yen(total)}`;
+
+    for (const key of Object.keys(MONTH_META)) {
+      const tab = document.getElementById(`tab-${key}`);
+      const active = key === currentMonth;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+    }
+  }
+
+  function downloadCsv() {
+    const rows = TRANSACTIONS[currentMonth];
+    const csvField = (v) => {
+      const s = String(v);
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const lines = [["利用日", "利用店名", "カテゴリ", "利用金額（円）"].join(",")];
+    for (const tx of rows) {
+      const merchant = tx.note ? `${tx.merchant}（${tx.note}）` : tx.merchant;
+      lines.push([tx.date, csvField(merchant), tx.category, tx.amount].join(","));
+    }
+    // BOM 付き UTF-8（Excel での文字化け防止）
+    const blob = new Blob(["\uFEFF" + lines.join("\r\n") + "\r\n"], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `card-statement-${currentMonth}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  for (const key of Object.keys(MONTH_META)) {
+    document.getElementById(`tab-${key}`).addEventListener("click", () => {
+      currentMonth = key;
+      render();
+    });
+  }
+  document.getElementById("btn-csv").addEventListener("click", downloadCsv);
+
+  render();
+</script>
+</body>
+</html>
